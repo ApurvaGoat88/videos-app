@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1078840760756",
+    "project_id": "asignment1-e0e9a",
+    "storage_bucket": "asignment1-e0e9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078840760756:android:242db5972472a0c9f0fae1",
+        "android_client_info": {
+          "package_name": "com.example.blackcoffer_assignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgf_NFNyEPMleAk7SHzmEw712ZVlwX1GM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
