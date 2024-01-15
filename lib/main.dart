@@ -1,3 +1,4 @@
+import 'package:blackcoffer_assignment/authentication/views/link_page.dart';
 import 'package:blackcoffer_assignment/features/login/screens/login_page.dart';
 import 'package:blackcoffer_assignment/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-      return const LoginPage() ;
+      return const LinkPage() ;
 
   }
 }
