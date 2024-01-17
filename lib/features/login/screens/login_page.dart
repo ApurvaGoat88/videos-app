@@ -2,6 +2,7 @@
 import 'package:blackcoffer_assignment/features/login/screens/otp_verification_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +16,10 @@ class _LoginPageState extends State<LoginPage> {
   final _phoneController = TextEditingController() ;
   bool _isValidPhoneNumber(String phoneNumber) {
         return phoneNumber.replaceAll(RegExp(r'\D'), '').length == 10 || phoneNumber.replaceAll(RegExp(r'\D'), '').length == 0 ;
+  }
+  Future<void> saveResendTokenToSharedPreferences(int? resendToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('resendToken', resendToken ?? 0);
   }
 
   @override
@@ -110,10 +115,13 @@ class _LoginPageState extends State<LoginPage> {
                 print('Full Number: $fullNumber');
                 if(_phoneController.text.length == 10){
                  await  FirebaseAuth.instance.verifyPhoneNumber(verificationCompleted: (PhoneAuthCredential credential){}, verificationFailed: (FirebaseAuthException exception){},
-                      codeSent: (verificationID,  resendToken){
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpScreen(verificationID: verificationID))) ;
-
+                      codeSent: (verificationID,  resendToken)async {
+                        print(resendToken.toString() + " asdsadsdsddas") ;
+                      await saveResendTokenToSharedPreferences(resendToken).then((value) {
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) =>
+                                OtpScreen(verificationID: verificationID , phoneNumber: fullNumber,)));
+                      });
                       }, codeAutoRetrievalTimeout: (id){},phoneNumber: fullNumber);
                 }
                 else{

@@ -1,17 +1,47 @@
 import 'package:blackcoffer_assignment/common/widgets/snackbar.dart';
 import 'package:blackcoffer_assignment/features/home/screens/home_page.dart';
+import 'package:blackcoffer_assignment/features/login/screens/user_details_linkpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key,required this.verificationID});
+  const OtpScreen({super.key,required this.verificationID , required this.phoneNumber});
 final verificationID ;
+final String phoneNumber ;
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
   final _otpController = TextEditingController() ;
+  Future<void> resendCode(String phoneNumber, String verificationId, resendToken) async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await _auth.signInWithCredential(credential);
+          print('Verification Completed');
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          print('Verification Failed: $e');
+        },
+        codeSent: (String newVerificationId, int? newResendToken)async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setInt('resendToken', resendToken ?? 0);
+        },
+        codeAutoRetrievalTimeout: (String newVerificationId) {
+          print('Auto-Retrieval Timeout');
+        },
+        forceResendingToken:resendToken,
+      );
+    } catch (e) {
+      print('Error resending code: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -60,7 +90,8 @@ class _OtpScreenState extends State<OtpScreen> {
                     try{
                      PhoneAuthCredential credential = await  PhoneAuthProvider.credential(verificationId: widget.verificationID.toString(), smsCode: _otpController.text.toString()) ;
                      await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const HomePage())) ;
+                       final user = value.user ;
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>  UserDeatilsLoink(uid: user!.uid ))) ;
                      });
                     }
                     on FirebaseException catch (e){
@@ -83,11 +114,12 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       )
                   ),),
-                  ElevatedButton(onPressed: (){
+                  ElevatedButton(onPressed: ()async{
+                    final prefs = await SharedPreferences.getInstance() ;
+                    final resendToken = prefs.getInt('resendToken') ;
+                    print(resendToken) ;
 
-                    String phoneNumber = _otpController.text.trim();
-                    String fullNumber = '$phoneNumber';
-                    print('Full Number: $fullNumber');
+                    resendCode(widget.phoneNumber,widget.verificationID, resendToken);
 
 
                   }, child: const Text("Resend OTP"),style: ElevatedButton.styleFrom(
