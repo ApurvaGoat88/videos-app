@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:blackcoffer_assignment/common/widgets/snackbar.dart';
 import 'package:blackcoffer_assignment/features/upload_videos_page/provider/upload_provider.dart';
-import 'package:blackcoffer_assignment/models/userdata/userdata_model.dart';
+import 'package:blackcoffer_assignment/models/userdata/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

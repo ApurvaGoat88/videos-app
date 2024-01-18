@@ -1,4 +1,7 @@
+
 import 'package:blackcoffer_assignment/features/explore_page/controller/explore_page_controller.dart';
+import 'package:blackcoffer_assignment/features/explore_page/provider/explore_page_provider.dart';
+import 'package:blackcoffer_assignment/features/explore_page/screen/get_video_details_page.dart';
 import 'package:blackcoffer_assignment/features/explore_page/screen/video_player_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,16 +15,18 @@ class ExplorePage extends ConsumerWidget {
     final refData = ref.watch(videoDataProvider) ;
 
         return refData.when(data: (videos){
+          // print(videos[0].toJson()) ;
           return Scaffold(
             body: SizedBox(
-              height:videos.length * 250.sp,
+              height:videos.length * 340.sp,
               child: ListView.builder(physics: const BouncingScrollPhysics(),itemCount: videos.length,itemBuilder: (context,index){
                  final diff  = videos[index].dateTime.toDate().difference(DateTime.now()).inDays.toString() ;
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ViewVideoScreen(video: videos[index])));
+                    onTap: ()async {
+                     await  ExploreController().updateViews(videos[index], context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GetVideoDataPage(videomodel: videos[index])));
                     },
                     child: Card(
                       child: Container(
@@ -33,7 +38,7 @@ class ExplorePage extends ConsumerWidget {
                           children: [
 
                             Padding(
-                              padding: EdgeInsets.all(10.0.sp),
+                              padding: EdgeInsets.only(bottom:10.0.sp),
                               child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -88,21 +93,21 @@ class ExplorePage extends ConsumerWidget {
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 8.sp),
                                         child:
-                                        Text( "@${videos[index].username}",style: TextStyle(
+                                        Text( "@${videos[index].username }",style: TextStyle(
                                           color: Colors.grey.shade500
                                         ),) ,
 
 
                                       ),
                                       Expanded(child: Container(
-                                        child:const  Text("69 views"),
+                                        child:  Text("${videos[index].views} views"),
                                       )),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text( diff == '0' ? 'Today' : "$diff Days ago", style: TextStyle(
+                                            Text( diff == '0' ? 'Today' : "$diff Days ago", style:const TextStyle(
                                               color: Colors.grey
                                             ),),
 

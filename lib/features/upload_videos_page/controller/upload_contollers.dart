@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:blackcoffer_assignment/common/widgets/snackbar.dart';
-import 'package:blackcoffer_assignment/models/userdata/userdata_model.dart';
+import 'package:blackcoffer_assignment/models/userdata/models.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +36,7 @@ class UploadController{
 
 
         saveDatatoFirestore(String userprofilePicture,String location , String des ,String title ,String path , context , String category ,String username,String vid  )async{
-          showDialog(context: context, barrierDismissible: false,builder: (context) => Center(
+          showDialog(context: context, barrierDismissible: false,builder: (context) =>const Center(
             child:  CircularProgressIndicator(
               color: Colors.black,
             ),
@@ -45,8 +45,7 @@ class UploadController{
 
             final  videoURL = await uploadVideoToFirebase(vid, path) ;
             final thumbnailURl = await uploadthumbnailToFirebase(vid, path);
-
-            final video = Video( userUrl:  userprofilePicture,videourl: videoURL, videoThumbnail: thumbnailURl, title: title, des: des, category: category, location: location, dateTime: Timestamp.now(), username: username);
+            final video = Video( likes:  0,dislikes: 0,userUrl:  userprofilePicture,videourl: videoURL, videoThumbnail: thumbnailURl, title: title, des: des, category: category,vid: vid, location: location, dateTime: Timestamp.now(), username: username ,views:  0);
 
             final json  = video.toJson() ;
 

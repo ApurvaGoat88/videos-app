@@ -51,6 +51,11 @@ class Video {
   String des ;
   String userUrl ;
   Timestamp dateTime ;
+  int views ;
+  int likes ;
+  int dislikes ;
+  String vid ;
+
 
   String username ;
 
@@ -63,7 +68,11 @@ class Video {
     required this.location,
     required this.dateTime,
     required this.username ,
-    required this.userUrl
+    required this.userUrl,
+    required this.views,
+    required this.vid,
+    required this.dislikes,
+    required this.likes,
 
   });
 
@@ -76,7 +85,14 @@ class Video {
     category: json["category"],
     location: json["location"],
     dateTime: json['datetime'],
-    userUrl: json['userurl']
+    userUrl: json['userurl'],
+    vid: json['vid'],
+    views: json['views'] ?? 0,
+    dislikes: json['dislikes'] ?? 0,
+      likes: json['likes'] ?? 0
+
+
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +104,10 @@ class Video {
     "category": category,
     "location": location,
     'datetime':dateTime,
-    'userurl':userUrl
+    'userurl':userUrl,
+    'views' : views,
+     'vid':vid,
+    'likes':likes,
+    'dislikes':dislikes
   };
 }
