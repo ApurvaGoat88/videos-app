@@ -86,14 +86,14 @@ class _UploadVideoFormState extends ConsumerState<UploadVideoForm> {
                         },
                       ),
                       const SizedBox(height: 10.0),
-                      Row(
+                    const   Row(
                         children: [
                           Text('Categories'),
                         ],
                       ),
                       const SizedBox(height: 10.0),
                       DropdownButtonFormField(
-                        decoration: InputDecoration(
+                        decoration:const  InputDecoration(
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black, width: 1),
                           ),
@@ -149,8 +149,19 @@ class _UploadVideoFormState extends ConsumerState<UploadVideoForm> {
                             }
                             String vid = DateTime.now().millisecondsSinceEpoch.toString() ;
                             list.add(vid );
-                            UploadController().saveDatatoFirestore(widget.usermodel.imageurls,location, description, title, widget.file.path, context, category,widget.usermodel.username,vid);
-                            await  UploadController().updateVideoList(widget.usermodel.uid, list) ;
+                            await UploadController().saveDatatoFirestore(widget.usermodel.imageurls,location, description, title, widget.file.path, context, category,widget.usermodel.username,vid);
+                            await  UploadController().updateVideoList(widget.usermodel.uid, list).then((value) {
+
+                              Navigator.pop(context) ;
+                              Navigator.pop(context) ;
+                              showDialog(context: context, builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Video Posted Successfully"),
+                                  content: Text('your video naming ${titleController.text.toString()} Posted SuccessFully'),
+                                ) ;
+                              });
+
+                            }) ;
                           }
 
                         },

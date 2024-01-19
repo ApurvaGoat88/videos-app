@@ -1,5 +1,5 @@
-import 'package:blackcoffer_assignment/features/explore_page/controller/video_page_controller.dart';
-import 'package:blackcoffer_assignment/features/explore_page/screen/video_player_view.dart';
+import 'package:blackcoffer_assignment/features/view_video/controller/video_page_controller.dart';
+import 'package:blackcoffer_assignment/features/view_video/screens/video_player_view.dart';
 import 'package:blackcoffer_assignment/models/comments/comment_model.dart';
 import 'package:blackcoffer_assignment/models/userdata/models.dart';
 import 'package:flutter/material.dart';

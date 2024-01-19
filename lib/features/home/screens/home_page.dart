@@ -53,48 +53,46 @@ class _HomePageState extends ConsumerState<HomePage> {
               },
               icon: const  Icon(Icons.logout_outlined))
         ],
-      ),
+      ),bottomNavigationBar: SweetNavBar(
+
+        borderRadius: 0,
+      height: 40,
+      currentIndex: index,
+      paddingBackgroundColor: Colors.transparent,
+      items: [
+        SweetNavBarItem(
+          sweetActive: const Icon(Icons.home),
+          sweetIcon: const Icon(
+            Icons.home_outlined,
+          ),
+          sweetLabel: 'Home',),
+        SweetNavBarItem(
+            sweetIcon: const Icon(Icons.add), sweetLabel: 'Business'),
+        SweetNavBarItem(
+            sweetIcon: const Icon(Icons.video_library_outlined), sweetActive: const Icon(Icons.video_library_rounded),sweetLabel: 'School'),
+      ],
+      onTap: (ind) {
+        setState(() {
+          index = ind;
+        });
+      },
+    ),
       body: locationforAppBar.when(data: (data){
-        return Stack(
-
-          children: [
-            Container(child:  [
-              ExplorePage(),
-              UploadVideoPage(location: data,),
-              ProfilePage() ,
-            ] [index]),
-            Container(
-              margin: EdgeInsets.only(top: 750.sp),
-              child: SweetNavBar(
-
-
-                currentIndex: index,
-                paddingBackgroundColor: Colors.transparent,
-                items: [
-                  SweetNavBarItem(
-                    sweetActive: const Icon(Icons.home),
-                    sweetIcon: const Icon(
-                      Icons.home_outlined,
-                    ),
-                    sweetLabel: 'Home',),
-                  SweetNavBarItem(
-                      sweetIcon: const Icon(Icons.add), sweetLabel: 'Business'),
-                  SweetNavBarItem(
-                      sweetIcon: const Icon(Icons.video_library_outlined), sweetActive: const Icon(Icons.video_library_rounded),sweetLabel: 'School'),
-                ],
-                onTap: (ind) {
-                  setState(() {
-                    index = ind;
-                  });
-                },
-              ),
-            ),
-          ],
-        ) ;
+        return Container(child:  [
+          ExplorePage(),
+          UploadVideoPage(location: data,),
+          ProfilePage() ,
+        ] [index]) ;
       }, error:(_,__){}, loading: (){
         return const Center(
-          child:  CircularProgressIndicator(
-            color: Colors.black,
+          child:  Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Colors.black,
+              ),
+              Text("Getting Location")
+            ],
           ),
         );
       })

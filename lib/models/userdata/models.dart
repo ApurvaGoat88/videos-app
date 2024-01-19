@@ -51,6 +51,7 @@ class Video {
   String des ;
   String userUrl ;
   Timestamp dateTime ;
+  String userId ;
   int views ;
   int likes ;
   int dislikes ;
@@ -73,6 +74,7 @@ class Video {
     required this.vid,
     required this.dislikes,
     required this.likes,
+    required this.userId ,
 
   });
 
@@ -89,7 +91,8 @@ class Video {
     vid: json['vid'],
     views: json['views'] ?? 0,
     dislikes: json['dislikes'] ?? 0,
-      likes: json['likes'] ?? 0
+      likes: json['likes'] ?? 0,
+    userId: json['uid'],
 
 
 
@@ -108,6 +111,7 @@ class Video {
     'views' : views,
      'vid':vid,
     'likes':likes,
-    'dislikes':dislikes
+    'dislikes':dislikes,
+    'uid':userId,
   };
 }

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 CommentList commentListFromJson(String str) => CommentList.fromJson(json.decode(str));
 
 String commentListToJson(CommentList data) => json.encode(data.toJson());
@@ -30,6 +32,7 @@ class Comment {
   String userurl;
   String useruid;
   String vid;
+  Timestamp dateTime ;
 
   Comment({
     required this.comment,
@@ -37,6 +40,7 @@ class Comment {
     required this.userurl,
     required this.useruid,
     required this.vid,
+    required this.dateTime
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
@@ -45,6 +49,7 @@ class Comment {
     userurl: json["userurl"],
     useruid: json["useruid"],
     vid: json["vid"],
+    dateTime: json["datetime"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +58,6 @@ class Comment {
     "userurl": userurl,
     "useruid": useruid,
     "vid": vid,
+    "datetime": dateTime
   };
 }

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:blackcoffer_assignment/common/widgets/snackbar.dart';
 import 'package:blackcoffer_assignment/models/userdata/models.dart';
@@ -42,10 +43,10 @@ class UploadController{
             ),
           ));
           try{
-
+            final uid = FirebaseAuth.instance.currentUser!.uid ;
             final  videoURL = await uploadVideoToFirebase(vid, path) ;
             final thumbnailURl = await uploadthumbnailToFirebase(vid, path);
-            final video = Video( likes:  0,dislikes: 0,userUrl:  userprofilePicture,videourl: videoURL, videoThumbnail: thumbnailURl, title: title, des: des, category: category,vid: vid, location: location, dateTime: Timestamp.now(), username: username ,views:  0);
+            final video = Video( userId: uid,likes:  0,dislikes: 0,userUrl:  userprofilePicture,videourl: videoURL, videoThumbnail: thumbnailURl, title: title, des: des, category: category,vid: vid, location: location, dateTime: Timestamp.now(), username: username ,views:  0);
 
             final json  = video.toJson() ;
 

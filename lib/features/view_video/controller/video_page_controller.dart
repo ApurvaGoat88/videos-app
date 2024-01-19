@@ -1,23 +1,52 @@
 
+import 'dart:convert';
+
 import 'package:blackcoffer_assignment/models/comments/comment_model.dart';
 import 'package:blackcoffer_assignment/models/userdata/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class VideoPageController{
-
-
-  Future<CommentList> getCommentsofVideo(String vid) async {
+  Stream<CommentList> getCommentsStream(String vid) {
     final _ref = FirebaseFirestore.instance.collection('comments').doc(vid);
 
-    final docSnapshot = await _ref.get();
-    final jsonData = docSnapshot.data();
+    return _ref.snapshots().map((docSnapshot) {
+      final jsonData = docSnapshot.get('comments') as List;
+      List<Comment> comments = [];
 
-    if (jsonData != null) {
-      final comments = commentListFromJson(jsonData.toString()) ;
-      return comments;
-    } else {
-      return CommentList(comments: []); // Return an empty list if the document is not found or doesn't contain valid data
+      if (jsonData != null) {
+        for (var json in jsonData) {
+          comments.add(Comment.fromJson(json));
+        }
+        return CommentList(comments: comments);
+      } else {
+        return CommentList(comments: []);
+      }
+    });
+        }
+
+  Future<CommentList> getCommentsofVideo(String vid) async {
+    try {
+      final _ref = FirebaseFirestore.instance.collection('comments').doc(vid);
+
+      final docSnapshot = await _ref.get();
+      final jsonData = docSnapshot.get('comments') as List;
+      print(jsonData) ;
+      List<Comment> comments = [];
+      if (jsonData != null) {
+        for (var json in jsonData){
+          comments.add(Comment.fromJson(json ));
+        }
+        return CommentList(comments: comments);
+
+      } else {
+        return CommentList(comments: [
+        ]); // Return an empty list if the document is not found or doesn't contain valid data
+      }
+    }
+    catch(e){
+      print(e.toString()) ;
+      return CommentList(comments: []) ;
     }
   }
 
