@@ -45,7 +45,9 @@ dependencies:
   shared_preferences: ^2.2.2
   geolocator: ^10.1.0
   geocoding: ^2.1.1
+  chewie:
   sweet_nav_bar: ^1.0.5
+  share:
   video_compress: ^3.1.2
   firebase_app_check:
   video_player:

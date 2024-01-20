@@ -31,7 +31,8 @@ class ExplorePage extends ConsumerWidget {
                         child: GestureDetector(
                           onTap: ()async {
                            await  ExploreController().updateViews(videos[index], context);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => GetVideoDataPage(videomodel: videos[index])));
+                            Navigator.push(context, PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 600),pageBuilder: (context ,_,__) => GetVideoDataPage(videomodel: videos[index])));
                           },
                           child: Container(
                             width: MediaQuery.sizeOf(context).width.sp,
@@ -47,29 +48,32 @@ class ExplorePage extends ConsumerWidget {
 
 
 
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage('assets/images/login2.png'), // Replace with your placeholder image
-                                    image: NetworkImage(videos[index].videoThumbnail, ), // Replace with your actual image URL
-                                    fit: BoxFit.fill,
-                                    width: MediaQuery.sizeOf(context).width.sp, // Set your desired width
-                                    height: 200.0, // Set your desired height
+                                  child: Hero(
+                                    tag:videos[index].vid ,
+                                    child: FadeInImage(
+                                      placeholder: const AssetImage('assets/images/login2.png'), // Replace with your placeholder image
+                                      image: NetworkImage(videos[index].videoThumbnail, ), // Replace with your actual image URL
+                                      fit: BoxFit.fill,
+                                      width: MediaQuery.sizeOf(context).width.sp, // Set your desired width
+                                      height: 200.0, // Set your desired height
 
-                                    imageErrorBuilder: (context, error, stackTrace) {
-                                      return const Center(
-                                        child: Icon(
-                                          Icons.error,
-                                          color: Colors.red,
-                                        ),
-                                      );
-                                    },
-                                    // Loading  (CircularProgressIndicator)
-                                    placeholderErrorBuilder: (context, error, stackTrace) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      );
-                                    },
+                                      imageErrorBuilder: (context, error, stackTrace) {
+                                        return const Center(
+                                          child: Icon(
+                                            Icons.error,
+                                            color: Colors.red,
+                                          ),
+                                        );
+                                      },
+                                      // Loading  (CircularProgressIndicator)
+                                      placeholderErrorBuilder: (context, error, stackTrace) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
 
                                 ),

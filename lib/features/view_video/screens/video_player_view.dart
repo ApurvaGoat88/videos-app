@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share/share.dart' ;
+import 'package:chewie/chewie.dart';
 class ViewVideoScreen extends StatefulWidget {
   const ViewVideoScreen({super.key ,required this.video ,required this.commentList
   });
@@ -20,6 +22,7 @@ final CommentList commentList ;
 
 class _ViewVideoScreenState extends State<ViewVideoScreen> {
   VideoPlayerController? _videoController;
+  ChewieController?  _chewieController ;
   final _formKey = GlobalKey<FormState>();
   bool liked = false ;
   final _commentController = TextEditingController() ;
@@ -36,17 +39,22 @@ class _ViewVideoScreenState extends State<ViewVideoScreen> {
         _isLoading = false ;
       });
     });
-    _videoController!.initialize(
-    );
-    _videoController!.play();
-    _videoController!.setLooping(false );
+   _chewieController = ChewieController(videoPlayerController: _videoController!,
+   autoPlay: true ,
+     autoInitialize: true,
+     looping:  false
+   );
 
+  }
+  void shareUrl(String url) {
+    Share.share('Check out this URL: $url');
   }
 
   @override
   void dispose() {
     super.dispose();
     _videoController!.dispose();
+    _chewieController!.dispose() ;
   }
 
   @override
@@ -69,17 +77,7 @@ class _ViewVideoScreenState extends State<ViewVideoScreen> {
     child: SizedBox(
     width: MediaQuery.sizeOf(context).width,
     height: MediaQuery.sizeOf(context).height / 1.7,
-    child: Stack(
-      alignment: Alignment.center,
-      children: [
-        VideoPlayer(_videoController!),
-        // Loading widget shown while the video is loading
-        if (_isLoading)
-        const CircularProgressIndicator(
-            color: Colors.black,
-          ),
-      ],
-    ),
+    child: Chewie(controller: _chewieController!),
     ),
     ),
       const Divider(),
@@ -134,7 +132,9 @@ class _ViewVideoScreenState extends State<ViewVideoScreen> {
                 ),
                 Column(
                   children: [
-                    IconButton(onPressed: (){}, icon:const  Icon(Icons.share)),
+                    IconButton(onPressed: (){
+                      shareUrl(video.videourl) ;
+                    }, icon:const  Icon(Icons.share)),
                     const Text('share'),
                   ],
                 )

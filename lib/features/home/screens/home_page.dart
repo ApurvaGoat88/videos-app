@@ -78,10 +78,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       },
     ),
       body: locationforAppBar.when(data: (data){
+        final uid = FirebaseAuth.instance.currentUser!.uid; 
         return Container(child:  [
           ExplorePage(),
           UploadVideoPage(location: data,),
-          ProfilePage() ,
+          ProfilePage(uid: uid) ,
         ] [index]) ;
       }, error:(_,__){}, loading: (){
         return const Center(

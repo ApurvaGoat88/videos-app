@@ -28,7 +28,7 @@ class _CommentSectionState extends State<CommentSection> {
           else{
             if(snapshot.hasData){
 
-              return ListView.builder(itemCount: snapshot.data!.comments.length,itemBuilder: (context,ind){
+              return ListView.builder(itemCount: snapshot.data!.comments.length,physics:snapshot.data!.comments.length <= 5 ? NeverScrollableScrollPhysics() : BouncingScrollPhysics(),itemBuilder: (context,ind){
                 final comment = snapshot.data!.comments[ind] ;
                 final diffindays = DateTime.now().difference(comment.dateTime.toDate()).inDays.toString() ;
                 final diffinHours = DateTime.now().difference(comment.dateTime.toDate()).inHours.toString() ;

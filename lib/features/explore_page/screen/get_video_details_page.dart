@@ -19,9 +19,12 @@ class _GetVideoDataPageState extends State<GetVideoDataPage> {
         future:  VideoPageController().getCommentsofVideo(widget.videomodel.vid),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Scaffold(
-          body:  Center(
-              child:  CircularProgressIndicator()),
+        return Scaffold(
+          body:  Hero(
+            tag: widget.videomodel.vid,
+            child: Center(
+                child:  CircularProgressIndicator()),
+          ),
         ); // Show a loading indicator while fetching data
       } else if (snapshot.hasError) {
         return Text('Error: ${snapshot
@@ -32,7 +35,7 @@ class _GetVideoDataPageState extends State<GetVideoDataPage> {
       }
       
     }
-    ); 
+    );
     
   }
 }
